@@ -1,13 +1,40 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link , useNavigate} from "react-router-dom";
 import { useState } from "react";
 import axios from "axios"
+
 
 const Login = () => {
   const [email,setEmail]= useState("")
   const [password , setPassword] = useState("")
-
+  const navigate = useNavigate()
   
+
+  const handleSubmit = async (e)=>{
+        e.preventDefault()
+   
+        try{
+            const userData= {
+              email:email,
+              password:password
+            }
+
+
+            const res = await axios.post("http://localhost:4000/users/login",userData)
+            console.log(res.data.token)
+
+            if(res.status===200){
+                 localStorage.setItem("token", res.data.token);
+                 navigate('/home')
+
+               
+            }
+
+        }catch(error){
+
+        }
+
+}
 
 
   
@@ -24,13 +51,13 @@ const Login = () => {
           Welcome Back 👋
         </h2>
 
-        <form className="space-y-5">
+        <form onSubmit={e=>handleSubmit(e)} className="space-y-5">
           <div>
             <label className="block mb-1 text-sm text-gray-300">Email</label>
             <input
               type="email"
               name="email"
-       
+              onChange={e=>setEmail(e.target.value)}
               className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-pink-500"
               placeholder="you@example.com"
             />
@@ -41,6 +68,7 @@ const Login = () => {
             <input
               type="password"
               name="password"
+              onChange={e=>setPassword(e.target.value)}
 
               className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-pink-500"
               placeholder="••••••••"

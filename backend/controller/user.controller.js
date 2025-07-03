@@ -5,9 +5,12 @@ const userService = require("../services/user.services")
 module.exports.userSignup = async (req,res)=>{
     try{
         const {fullName,email,password} = req.body;
+        console.log(req.body)
+        console.log(fullName,email,password)
 
 
         isAlreadyExsit = userModel.findOne({email})
+        console.log(isAlreadyExsit)
 
         
 
@@ -28,7 +31,7 @@ module.exports.userSignup = async (req,res)=>{
         res.status(200).json({token,user})
 
     } catch(error){
-             return res.status(404).json({ message: "Server error", error: error.message });
+            return res.status(500).json({ message: "Server error", error: error.message });
     }
 }
 
@@ -36,6 +39,7 @@ module.exports.userSignup = async (req,res)=>{
 module.exports.login= async  (req,res)=>{
     try{
         const {email,password} = req.body
+        console.log(email,password)
 
         user = await userModel.findOne({email}).select("+password")
 

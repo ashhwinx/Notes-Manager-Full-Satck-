@@ -1,13 +1,31 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { useState, useSyncExternalStore } from "react";
+import { Link ,useNavigate} from "react-router-dom";
+import { useState,  } from "react";
 
 const Signup = () => {
     const [email , setEmail] = useState("")
-     const [password , setPassword] = useState("")
-      const [name, setName] = useState("")
+    const [password , setPassword] = useState("")
+    const [fullName, setFullName] = useState("")
+    const navigate = useNavigate()
 
-    
+    const handlesubmit = async (e)=>{
+      e.preventDefault()
+      try{
+          const userData = {
+            fullName:fullName,
+            email:email,
+            password:password
+          } 
+          console.log(userData)
+
+          const res = await axios.post("http://localhost:4000/users/register", userData)
+          console.log(res)
+          console.log(res.status)
+      }catch(error){
+
+      }
+    }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -20,13 +38,13 @@ const Signup = () => {
           Create Account 📝
         </h2>
 
-        <form className="space-y-5">
+        <form onSubmit={e=>handlesubmit(e)} className="space-y-5">
           <div>
             <label className="block mb-1 text-sm text-gray-300">Name</label>
             <input
               type="text"
               name="name"
-              onChange={e=>(setName(e.target.value))}
+              onChange={e=>(setFullName(e.target.value))}
             
               className="w-full px-4 py-2 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-pink-500"
               placeholder="Enter your name"
