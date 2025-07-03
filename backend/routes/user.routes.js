@@ -1,15 +1,11 @@
-const express =require('express')
-const router = express.Router();
-const authController = require('../controllers/auth.controller')
-const { body } = require("express-validator");
+const express = require('express')
+const router = express.Router()
+const userController = require("../controller/user.controller")
 
 
-router.post("/register",[
-    body('username'),
-    body('email').isEmail().withMessage("Invalid Email"),
-    body('password')
+router.post('/register',  userController.userSignup)
 
-],authController.registerUser)
+router.post("/login", userController.login)
 
 
-module.exports = router
+module.exports  = router

@@ -1,14 +1,23 @@
-const express = require('express')
+const dotenv= require("dotenv")
+dotenv.config()
+const express = require("express")
 const app = express()
-const connectDb = require("./config/db")
-connectDb()
+const conectToDB = require("./db/db")
+conectToDB()
 const userRoutes = require("./routes/user.routes")
 
-app.get('/',(req,res)=>{
-    res.send("hellloooo")
-})    
 
-app.use('/users', userRoutes)
-app.listen(3000,()=>{
-    console.log("connected")
+const PORT =    process.env.PORT || 4000
+
+app.use(express.json())
+
+app.get("/",(req,res)=>{
+    res.send("etstststs")
+})
+
+app.use("/users", userRoutes)
+
+
+app.listen(PORT,()=>{
+    console.log(`SERVER IS RUNNING ON ${PORT}`)
 })
